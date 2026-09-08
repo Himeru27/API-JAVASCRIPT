@@ -5,6 +5,8 @@ const baseApiUrl = "http://localhost/library/api";
 
 sessionStorage.setItem("baseAPIUrl", baseApiUrl);
 let categories = [];
+let details = [];
+let allBooksList = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   displayCategories();
@@ -12,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-submit").addEventListener("click", () => {
     insertBook();
   });
+  onBorrowPageLoad();
 });
 
 // ================================
@@ -69,13 +72,13 @@ const displayBooksTable = (books) => {
   const thead = document.createElement("thead");
   thead.innerHTML = `
       <tr>  
-        <th>TITLE</th>
-        <th>AUTHOR</th>
-        <th>ISBN</th>
-        <th>CATEGORY</th>
-        <th>YEAR PUBLISHED</th>
-        <th>PUBLISHER</th>
-        <th>ACTION</th>
+        <th class="text-white bg-success">TITLE</th>
+        <th class="text-white bg-success">AUTHOR</th>
+        <th class="text-white bg-success">ISBN</th>
+        <th class="text-white bg-success">CATEGORY</th>
+        <th class="text-white bg-success">YEAR PUBLISHED</th>
+        <th class="text-white bg-success">PUBLISHER</th>
+        <th class="text-white bg-success">ACTION</th>
       </tr>
     `;
   table.appendChild(thead);
@@ -162,4 +165,166 @@ const clearForm = () => {
   document.getElementById("category").selectedIndex = 0;
   document.getElementById("year-published").value = "";
   document.getElementById("publisher").value = "";
+};
+
+// ================================
+// IMPORTANT FUNCTION: saveBorrow
+// Validates form data, then sends an Axios POST request to the PHP API
+// ================================
+const saveBorrow = async () => {
+  const header = {
+    studentId: document.getElementById("students-select").value,
+    borrowDate: document.getElementById("borrow-date").value,
+    userId: 1, //the user's primary key (just defaulted to 1)
+  };
+
+  const jsonData = { header: header, details: details };
+
+  const formData = new FormData();
+  formData.append("operation", "saveBorrow");
+  formData.append("json", JSON.stringify(jsonData));
+
+  const response = await axios({
+    url: `${baseApiUrl}/borrow.php`,
+    method: "POST",
+    data: formData,
+  });
+
+  if (response.data == 1) {
+    alert("Borrow transaction has been successfully saved!");
+  } else {
+    alert("ERROR!");
+  }
+};
+
+// ================================
+// IMPORTANT FUNCTION: openDetailsModal
+// Populates the blank modal with a book select and qty field
+// ================================
+const openDetailsModal = async () => {
+  document.getElementById("blank-modal-title").innerText = "Add Borrow Details";
+  //get the books list and append them to the books select drop down
+  allBooksList = await getAllBooksList();
+
+  let myHtml = `
+      <input type="number" class="form-control input-qty" id="qty" placeholder="qty" value="1" />
+      <select class="form-select book-select" id="book">
+        <option value="0">SELECT BOOK</option>
+    `;
+  allBooksList.forEach((book) => {
+    myHtml += `<option value="${book.book_id}">${book.book_title}</option>`;
+  });
+  myHtml += `</select>`;
+
+  const modalBody = document.getElementById("blank-main-div");
+  modalBody.innerHTML = myHtml;
+
+  //listen to change event of the book select
+  modalBody.querySelector(".book-select").addEventListener("change", (e) => {
+    //get the qty
+    const qty = modalBody.querySelector(".input-qty").value;
+    //get the selected book id
+    const bookId = e.target.value;
+    //get book
+    const book = allBooksList.find((book) => book.book_id == bookId);
+    if (book) {
+      //add to details list
+      const item = {
+        bookId: book.book_id,
+        bookTitle: book.book_title,
+        qty: qty,
+      };
+      details.push(item);
+      displayDetails();
+    }
+  });
+
+  const myModal = new bootstrap.Modal(document.getElementById("blank-modal"), {
+    keyboard: true,
+    backdrop: "static",
+  });
+
+  myModal.show();
+};
+
+// ================================
+// IMPORTANT FUNCTION: displayDetails
+// Dynamically updates the borrow details table using DOM manipulation
+// ================================
+const displayDetails = () => {
+  //get the table body object
+  const tbody = document.getElementById("details-body");
+  //iterate thru the details list and display each in the table
+  let myHtml = ``;
+  details.forEach((detail) => {
+    myHtml += `
+        <tr>
+          <td>${detail.bookTitle}</td>
+          <td>${detail.qty}</td>
+        </tr>
+      `;
+  });
+  tbody.innerHTML = myHtml;
+};
+
+// ================================
+// IMPORTANT FUNCTION: onBorrowPageLoad
+// Loads students into the select element and sets up borrow-related event listeners
+// ================================
+const onBorrowPageLoad = async () => {
+  //load students to select element
+  const select = document.getElementById("students-select");
+  const students = await getAllStudents();
+
+  var html = `<option value="0">-- SELECT STUDENT --</option>`;
+  students.forEach((student) => {
+    html += `<option value=${student.stud_id}>${student.stud_last_name}, ${student.stud_first_name}</option>`;
+  });
+  select.innerHTML = html;
+
+  //set the date to today
+  document.getElementById("borrow-date").value = formatDateYYYYMMDD();
+
+  //set the onclick event of the details button
+  document.getElementById("button-details").addEventListener("click", () => {
+    openDetailsModal();
+  });
+
+  //set the onclick event of the save button
+  document.getElementById("button-save").addEventListener("click", () => {
+    saveBorrow();
+  });
+};
+
+const getAllStudents = async () => {
+  const response = await axios.get(`${baseApiUrl}/students.php`, {
+    params: { operation: "getAllStudents" },
+  });
+
+  if (response.status == 200) {
+    return response.data;
+  } else {
+    alert("Error!");
+  }
+};
+
+const getAllBooksList = async () => {
+  const response = await axios.get(`${baseApiUrl}/books.php`, {
+    params: { operation: "getAllBooks" },
+  });
+
+  if (response.status == 200) {
+    return response.data;
+  } else {
+    alert("Error!");
+  }
+};
+
+const formatDateYYYYMMDD = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0"); // Months start at 0
+  const dd = String(today.getDate()).padStart(2, "0");
+
+  return `${yyyy}-${mm}-${dd}`;
 };
