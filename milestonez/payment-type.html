@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Types - Hotel Billing System</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="./js/payment-type-index.js"></script>
+  </head>
+  <body>
+    <div id="header-div">
+      <h1 id="header-text">PAYMENT TYPES</h1>
+      <a href="dashboard.html">Back to Dashboard</a>
+    </div>
+    <div id="main-div">
+      <input
+        type="text"
+        id="type-name"
+        placeholder="Payment Type Name (e.g. GCash)"
+      />
+      <button type="button" id="btn-submit">Add Payment Type</button>
+    </div>
+    <div id="table-div"></div>
+
+    <div id="edit-div" style="display:none;">
+      <h3>Update Payment Type</h3>
+      <input type="text" id="update-type-name" placeholder="Payment Type Name" />
+      <input type="hidden" id="update-payment-type-id" />
+      <button type="button" id="btn-update">UPDATE</button>
+      <button type="button" id="btn-cancel-update">Cancel</button>
+    </div>
+
+    <div id="footer-div"></div>
+  </body>
+</html>
