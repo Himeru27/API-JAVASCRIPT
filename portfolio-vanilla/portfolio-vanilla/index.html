@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PLACEHOLDER — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <header id="site-header">
+      <div class="wrap nav-wrap">
+        <a class="brand" href="#top">PLACEHOLDER Name</a>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <nav id="site-nav">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#services">Services</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#contact" class="nav-cta">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section id="hero">
+        <div class="wrap hero-wrap">
+          <div class="hero-copy">
+            <p class="eyebrow-free">Hi, I'm PLACEHOLDER Name</p>
+            <h1>PLACEHOLDER headline — what you build and who it helps.</h1>
+            <p class="hero-sub">PLACEHOLDER one or two sentences about your focus, experience, and what makes your work distinct.</p>
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-primary">See my work</a>
+              <a href="#contact" class="btn btn-ghost">Get in touch</a>
+            </div>
+          </div>
+          <div class="hero-art">
+            <div class="avatar-ring">
+              <img src="./avatar-placeholder.svg" alt="PLACEHOLDER portrait" />
+            </div>
+            <div class="stat-chip chip-1"><strong id="stat-projects">0</strong><span>Projects</span></div>
+            <div class="stat-chip chip-2"><strong id="stat-years">0</strong><span>Years</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT / SKILLS BENTO -->
+      <section id="about">
+        <div class="wrap">
+          <h2>About</h2>
+          <div class="bento" id="bento-grid"></div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <div class="wrap">
+          <h2>Projects</h2>
+          <div class="grid" id="projects-grid"></div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="services">
+        <div class="wrap">
+          <h2>Services</h2>
+          <div class="grid grid-3" id="services-grid"></div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section id="testimonials">
+        <div class="wrap">
+          <h2>Testimonials</h2>
+          <div class="grid grid-2" id="testimonials-grid"></div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="wrap contact-wrap">
+          <div>
+            <h2>Let's talk</h2>
+            <p class="hero-sub">PLACEHOLDER contact blurb — how you like to be reached and what kind of projects you take on.</p>
+            <ul class="contact-list" id="contact-list"></ul>
+          </div>
+          <form id="contact-form">
+            <label>
+              Name
+              <input type="text" id="cf-name" placeholder="Your name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="cf-email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              Message
+              <textarea id="cf-message" rows="4" placeholder="Tell me about your project" required></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary w-100">Send message</button>
+            <p id="contact-status" class="contact-status" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer">
+      <div class="wrap footer-wrap">
+        <p>&copy; <span id="year"></span> PLACEHOLDER Name. All rights reserved.</p>
+        <div class="footer-links" id="footer-socials"></div>
+      </div>
+    </footer>
+
+    <script src="./data.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
