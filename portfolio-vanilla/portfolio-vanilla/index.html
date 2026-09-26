@@ -3,122 +3,214 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PLACEHOLDER — Portfolio</title>
+    <title>Your Name — Portfolio</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <!-- NAV -->
-    <header id="site-header">
-      <div class="wrap nav-wrap">
-        <a class="brand" href="#top">PLACEHOLDER Name</a>
-        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-        <nav id="site-nav">
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#services">Services</a>
-          <a href="#testimonials">Testimonials</a>
-          <a href="#contact" class="nav-cta">Contact</a>
-        </nav>
-      </div>
+    <!-- MOBILE TOP BAR (rail collapses into this under 1100px) -->
+    <header class="topbar">
+      <button id="rail-toggle" class="rail-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="rail">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="topbar__name">Your Name</span>
+      <button id="theme-toggle-mobile" class="theme-btn" aria-label="Switch theme">🌙</button>
     </header>
 
-    <main id="top">
-      <!-- HERO -->
-      <section id="hero">
-        <div class="wrap hero-wrap">
-          <div class="hero-copy">
-            <p class="eyebrow-free">Hi, I'm PLACEHOLDER Name</p>
-            <h1>PLACEHOLDER headline — what you build and who it helps.</h1>
-            <p class="hero-sub">PLACEHOLDER one or two sentences about your focus, experience, and what makes your work distinct.</p>
-            <div class="hero-actions">
-              <a href="#projects" class="btn btn-primary">See my work</a>
-              <a href="#contact" class="btn btn-ghost">Get in touch</a>
-            </div>
+    <div class="shell">
+      <!-- PROFILE RAIL -->
+      <aside class="rail" id="rail" aria-label="Profile and site navigation">
+        <div class="rail__inner">
+          <span class="rail__avatar">
+            <img src="./avatar.svg" alt="Your Name" width="120" height="120" />
+          </span>
+
+          <h2 class="rail__name">
+            Your Name
+            <span class="rail__verified" title="PLACEHOLDER - what the tick means (e.g. a certification)">✔</span>
+          </h2>
+          <p class="rail__handle">@yourhandle</p>
+
+          <div class="rail__actions">
+            <ul class="rail__socials" aria-label="Social profiles">
+              <li><a href="#" aria-label="Facebook profile">f</a></li>
+              <li><a href="#" aria-label="LinkedIn profile">in</a></li>
+              <li><a href="#" aria-label="Discord profile">d</a></li>
+            </ul>
+            <button type="button" id="theme-toggle" class="rail__theme" aria-label="Switch to dark theme">🌙</button>
           </div>
-          <div class="hero-art">
-            <div class="avatar-ring">
-              <img src="./avatar-placeholder.svg" alt="PLACEHOLDER portrait" />
+
+          <nav class="rail__nav" aria-label="Sections">
+            <ul>
+              <li><a href="#home" class="rail__link">Home</a></li>
+              <li><a href="#projects" class="rail__link">Projects</a></li>
+              <li><a href="#services" class="rail__link">Services</a></li>
+              <li><a href="#showcase" class="rail__link">Showcase</a></li>
+              <li><a href="#testimonials" class="rail__link">Testimonials</a></li>
+              <li><a href="#about" class="rail__link">About</a></li>
+              <li><a href="#contact" class="rail__link">FAQs / Contact</a></li>
+            </ul>
+          </nav>
+
+          <p class="rail__copy">&copy; <span class="year"></span><br />Your Name. All rights reserved.</p>
+        </div>
+      </aside>
+
+      <!-- SCROLLING PANEL -->
+      <main class="panel" id="panel">
+
+        <!-- HOME -->
+        <section id="home" class="view home">
+          <p class="eyebrow">Hi, I'm Your Name.</p>
+          <h1 class="home__headline">Your headline here.<br />Keep it short.</h1>
+          <p class="home__body">PLACEHOLDER - one line on what you do and who you do it for.</p>
+          <ul class="home__stats" aria-label="Quick facts">
+            <li><strong>0 yrs</strong><span>PLACEHOLDER</span></li>
+            <li><strong>#000</strong><span>PLACEHOLDER</span></li>
+            <li><strong>GMT+0</strong><span>PLACEHOLDER</span></li>
+          </ul>
+
+          <nav class="bento" aria-label="Explore the portfolio" id="bento-grid"></nav>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="view pgrid">
+          <header class="pgrid__head">
+            <span class="pgrid__eyebrow">Projects</span>
+            <h1 class="pgrid__title">Your projects headline, in one short line.</h1>
+            <p class="pgrid__lede">PLACEHOLDER - tell me what to put here: one line on what your projects are.</p>
+          </header>
+
+          <h2 class="group-title">Mobile Apps</h2>
+          <div class="grid grid-3" id="mobile-apps-grid"></div>
+
+          <h2 class="group-title">Web Apps</h2>
+          <div class="grid grid-3" id="web-apps-grid"></div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services" class="view pgrid">
+          <header class="pgrid__head">
+            <span class="pgrid__eyebrow">Services</span>
+            <h1 class="pgrid__title">Your services headline, in one short line.</h1>
+            <p class="pgrid__lede">PLACEHOLDER - tell me what to put here: one line on what you offer.</p>
+          </header>
+
+          <div class="method-plate">
+            <div class="method-copy">
+              <span class="eyebrow">Your Method</span>
+              <h2>One. Two. Three.<br /><span class="method-sub-line">Your method, in three steps.</span></h2>
+              <p class="hero-sub">PLACEHOLDER - one sentence on why your method works.</p>
             </div>
-            <div class="stat-chip chip-1"><strong id="stat-projects">0</strong><span>Projects</span></div>
-            <div class="stat-chip chip-2"><strong id="stat-years">0</strong><span>Years</span></div>
+            <ol class="stages" id="stages-list"></ol>
           </div>
-        </div>
-      </section>
 
-      <!-- ABOUT / SKILLS BENTO -->
-      <section id="about">
-        <div class="wrap">
-          <h2>About</h2>
-          <div class="bento" id="bento-grid"></div>
-        </div>
-      </section>
-
-      <!-- PROJECTS -->
-      <section id="projects">
-        <div class="wrap">
-          <h2>Projects</h2>
-          <div class="grid" id="projects-grid"></div>
-        </div>
-      </section>
-
-      <!-- SERVICES -->
-      <section id="services">
-        <div class="wrap">
-          <h2>Services</h2>
+          <h2 class="group-title">Your services, listed.</h2>
           <div class="grid grid-3" id="services-grid"></div>
-        </div>
-      </section>
+        </section>
 
-      <!-- TESTIMONIALS -->
-      <section id="testimonials">
-        <div class="wrap">
-          <h2>Testimonials</h2>
-          <div class="grid grid-2" id="testimonials-grid"></div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact">
-        <div class="wrap contact-wrap">
-          <div>
-            <h2>Let's talk</h2>
-            <p class="hero-sub">PLACEHOLDER contact blurb — how you like to be reached and what kind of projects you take on.</p>
-            <ul class="contact-list" id="contact-list"></ul>
+        <!-- SHOWCASE -->
+        <section id="showcase" class="view pgrid">
+          <header class="pgrid__head showcase__head">
+            <div>
+              <span class="pgrid__eyebrow">Showcase</span>
+              <h1 class="pgrid__title">Your flagship product, and the people using it.</h1>
+              <p class="pgrid__lede">PLACEHOLDER - tell me what to put here: one line on what this product is and why a visitor should look at it.</p>
+            </div>
+            <a class="badge-card" href="#">
+              <span class="badge-card__label">Featured on</span>
+              <span class="badge-card__text">PLACEHOLDER - a badge, award or launch link</span>
+            </a>
+          </header>
+          <div class="glass showcase__glass">
+            <p class="hero-sub">PLACEHOLDER — this is where your flagship build's screenshots, feature tabs and CTA go.</p>
           </div>
-          <form id="contact-form">
-            <label>
-              Name
-              <input type="text" id="cf-name" placeholder="Your name" required />
-            </label>
-            <label>
-              Email
-              <input type="email" id="cf-email" placeholder="you@example.com" required />
-            </label>
-            <label>
-              Message
-              <textarea id="cf-message" rows="4" placeholder="Tell me about your project" required></textarea>
-            </label>
-            <button type="submit" class="btn btn-primary w-100">Send message</button>
-            <p id="contact-status" class="contact-status" role="status"></p>
-          </form>
-        </div>
-      </section>
-    </main>
+        </section>
 
-    <footer id="site-footer">
-      <div class="wrap footer-wrap">
-        <p>&copy; <span id="year"></span> PLACEHOLDER Name. All rights reserved.</p>
-        <div class="footer-links" id="footer-socials"></div>
-      </div>
-    </footer>
+        <!-- TESTIMONIALS -->
+        <section id="testimonials" class="view pgrid">
+          <header class="pgrid__head">
+            <span class="pgrid__eyebrow">Testimonials</span>
+            <h1 class="pgrid__title">Your testimonials headline, in one short line.</h1>
+            <p class="pgrid__lede">PLACEHOLDER - tell me what to put here: one line that introduces the client list.</p>
+          </header>
+          <div class="grid grid-3" id="testimonials-grid"></div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="view pgrid">
+          <header class="pgrid__head">
+            <span class="pgrid__eyebrow">About</span>
+            <h1 class="pgrid__title">Hi, I'm Your Name.</h1>
+            <p class="pgrid__lede">PLACEHOLDER - tell me what to put here: one line on what you do.</p>
+          </header>
+
+          <p class="agrid__lead">
+            Your big statement goes here, in one or two lines.
+            <span class="soft"> A softer second half that finishes the thought.</span>
+          </p>
+          <p class="hero-sub">
+            <strong>Your company name</strong>, and <a href="#">your product</a> —
+            PLACEHOLDER - tell me what to put here: two sentences on your company, what you sell or build, and who it is for.
+          </p>
+
+          <ul class="caps-list" id="caps-list"></ul>
+
+          <div class="about-bar">
+            <div class="about-cell">
+              <span class="about-cell__title">Credential name</span>
+              <span class="about-cell__meta">Credential ID</span>
+            </div>
+            <div class="about-cell">
+              <span class="about-cell__title">PLACEHOLDER - your city or timezone</span>
+              <span class="about-cell__meta">Timezone · working hours</span>
+            </div>
+            <a class="about-cell about-cell--wide" href="#">
+              <span class="about-cell__title">Community or affiliation</span>
+              <span class="about-cell__meta">Your role there</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="view pgrid">
+          <header class="pgrid__head">
+            <span class="pgrid__eyebrow">Contact</span>
+            <h1 class="pgrid__title">Questions people ask before they write.</h1>
+            <p class="pgrid__lede">PLACEHOLDER - tell me what to put here: one line inviting people to reach out.</p>
+          </header>
+
+          <div class="contact-wrap">
+            <div class="faq-plate">
+              <ul id="faq-list"></ul>
+            </div>
+
+            <form id="contact-form">
+              <label>Name<input type="text" id="cf-name" placeholder="Your name" required /></label>
+              <label>Email<input type="email" id="cf-email" placeholder="you@example.com" required /></label>
+              <label>Message<textarea id="cf-message" rows="4" placeholder="Tell me about your project" required></textarea></label>
+              <button type="submit" class="btn btn-primary w-100">Send message</button>
+              <p id="contact-status" role="status"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- MOBILE TAB BAR -->
+    <nav class="tabbar" aria-label="Sections">
+      <a href="#home">Home</a>
+      <a href="#projects">Work</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
     <script src="./data.js"></script>
     <script src="./script.js"></script>

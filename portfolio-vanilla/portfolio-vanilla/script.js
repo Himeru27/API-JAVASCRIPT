@@ -1,14 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-  displayStats();
-  displaySkills();
-  displayProjects();
+  document.querySelector(".year").innerText = new Date().getFullYear();
+
+  displayHomeCards();
+  displayApps(mobileApps, "mobile-apps-grid");
+  displayApps(webApps, "web-apps-grid");
+  displayStages();
   displayServices();
   displayTestimonials();
-  displaySocials();
-  document.getElementById("year").innerText = new Date().getFullYear();
+  displayCapabilities();
+  displayFaqs();
 
-  document.getElementById("nav-toggle").addEventListener("click", () => {
-    toggleNav();
+  initTheme();
+  document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
+  document.getElementById("theme-toggle-mobile").addEventListener("click", toggleTheme);
+
+  document.getElementById("rail-toggle").addEventListener("click", toggleRail);
+  document.querySelectorAll(".rail__link, .tabbar a").forEach((link) => {
+    link.addEventListener("click", closeRail);
   });
 
   document.getElementById("contact-form").addEventListener("submit", (e) => {
@@ -17,99 +25,170 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-const displayStats = () => {
-  document.getElementById("stat-projects").innerText = profile.projectsCount;
-  document.getElementById("stat-years").innerText = profile.yearsCount;
-};
+const displayHomeCards = () => {
+  const grid = document.getElementById("bento-grid");
+  grid.innerHTML = "";
 
-const displaySkills = () => {
-  const bentoGrid = document.getElementById("bento-grid");
-  bentoGrid.innerHTML = "";
-
-  skills.forEach((skill) => {
-    const card = document.createElement("div");
-    card.classList.add("bento-card");
-    card.innerHTML = `
-      <h3>${skill.title}</h3>
-      <p>${skill.detail}</p>
+  homeCards.forEach((card) => {
+    const a = document.createElement("a");
+    a.classList.add("bento-card");
+    a.href = card.href;
+    a.innerHTML = `
+      <h3>${card.title}</h3>
+      <p>${card.desc}</p>
+      <span class="bento-card__arrow">&#8599;</span>
     `;
-    bentoGrid.appendChild(card);
+    grid.appendChild(a);
   });
 };
 
-const displayProjects = () => {
-  const projectsGrid = document.getElementById("projects-grid");
-  projectsGrid.innerHTML = "";
+const displayApps = (list, targetId) => {
+  const grid = document.getElementById(targetId);
+  grid.innerHTML = "";
 
-  projects.forEach((project) => {
-    const card = document.createElement("a");
-    card.classList.add("card", "project-card");
-    card.href = project.link;
+  list.forEach((app) => {
+    const card = document.createElement("div");
+    card.classList.add("card", "app-card");
+    card.style.setProperty("--app-color", app.accentColor);
 
-    const tagsHtml = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+    const statsHtml = app.stats
+      .map((s) => `<span class="app-card__stat"><strong>${s.value}</strong>${s.label}</span>`)
+      .join("");
 
     card.innerHTML = `
-      <h3>${project.title}</h3>
-      <p>${project.description}</p>
-      <div class="tag-row">${tagsHtml}</div>
+      <span class="app-card__badge">${app.badge}</span>
+      <h3>${app.name}</h3>
+      <p class="app-card__tagline">${app.tagline}</p>
+      <p>${app.description}</p>
+      <div class="app-card__stats">${statsHtml}</div>
     `;
-    projectsGrid.appendChild(card);
+    grid.appendChild(card);
+  });
+};
+
+const displayStages = () => {
+  const list = document.getElementById("stages-list");
+  list.innerHTML = "";
+
+  stages.forEach((stage) => {
+    const li = document.createElement("li");
+    li.classList.add("stage");
+    const chipsHtml = stage.chips.map((c) => `<span class="stage__chip">${c}</span>`).join("");
+    li.innerHTML = `
+      <span class="stage__index">${stage.index}</span>
+      <h3>${stage.label}.</h3>
+      <p>${stage.body}</p>
+      <div class="stage__chips">${chipsHtml}</div>
+    `;
+    list.appendChild(li);
   });
 };
 
 const displayServices = () => {
-  const servicesGrid = document.getElementById("services-grid");
-  servicesGrid.innerHTML = "";
+  const grid = document.getElementById("services-grid");
+  grid.innerHTML = "";
 
   services.forEach((service) => {
     const card = document.createElement("div");
     card.classList.add("card", "service-card");
+    const bulletsHtml = service.bullets.map((b) => `<li>${b}</li>`).join("");
     card.innerHTML = `
+      <span class="service-card__index">${service.index} / 05</span>
       <h3>${service.title}</h3>
-      <p>${service.detail}</p>
+      <p>${service.description}</p>
+      <span class="stage__chip">${service.chip}</span>
+      <ul class="service-card__bullets">${bulletsHtml}</ul>
     `;
-    servicesGrid.appendChild(card);
+    grid.appendChild(card);
   });
 };
 
 const displayTestimonials = () => {
-  const testimonialsGrid = document.getElementById("testimonials-grid");
-  testimonialsGrid.innerHTML = "";
+  const grid = document.getElementById("testimonials-grid");
+  grid.innerHTML = "";
 
-  testimonials.forEach((testimonial) => {
+  testimonials.forEach((client) => {
     const card = document.createElement("div");
     card.classList.add("card", "testimonial-card");
+    const tagsHtml = client.work.map((w) => `<span class="tag">${w}</span>`).join("");
     card.innerHTML = `
-      <p class="quote">&ldquo;${testimonial.quote}&rdquo;</p>
-      <p class="author">${testimonial.author}</p>
+      <span class="stage__index">${client.index}</span>
+      <h3>${client.name}</h3>
+      <p class="testimonial-card__role">${client.role}</p>
+      <p>${client.daily}</p>
+      <div class="tag-row">${tagsHtml}</div>
     `;
-    testimonialsGrid.appendChild(card);
+    grid.appendChild(card);
   });
 };
 
-const displaySocials = () => {
-  const contactList = document.getElementById("contact-list");
-  const footerSocials = document.getElementById("footer-socials");
-  contactList.innerHTML = "";
-  footerSocials.innerHTML = "";
+const displayCapabilities = () => {
+  const list = document.getElementById("caps-list");
+  list.innerHTML = "";
 
-  profile.socials.forEach((social) => {
+  capabilities.forEach((cap) => {
     const li = document.createElement("li");
-    li.innerHTML = `<a href="${social.href}">${social.label}</a>`;
-    contactList.appendChild(li);
-
-    const link = document.createElement("a");
-    link.href = social.href;
-    link.innerText = social.label;
-    footerSocials.appendChild(link);
+    li.classList.add("cap");
+    li.innerHTML = `
+      <span class="cap__title">${cap.title}</span>
+      <span class="cap__index">${cap.index}</span>
+    `;
+    list.appendChild(li);
   });
 };
 
-const toggleNav = () => {
-  const nav = document.getElementById("site-nav");
-  const toggle = document.getElementById("nav-toggle");
-  const isOpen = nav.classList.toggle("open");
+const displayFaqs = () => {
+  const list = document.getElementById("faq-list");
+  list.innerHTML = "";
+
+  faqs.forEach((faq, i) => {
+    const li = document.createElement("li");
+    li.classList.add("faq-item");
+    if (i === 0) li.classList.add("open");
+    li.innerHTML = `
+      <button type="button" class="faq-item__q">
+        <span>${faq.q}</span>
+        <span class="faq-item__caret">&#9662;</span>
+      </button>
+      <p class="faq-item__a">${faq.a}</p>
+    `;
+    li.querySelector(".faq-item__q").addEventListener("click", () => {
+      const wasOpen = li.classList.contains("open");
+      list.querySelectorAll(".faq-item").forEach((item) => item.classList.remove("open"));
+      if (!wasOpen) li.classList.add("open");
+    });
+    list.appendChild(li);
+  });
+};
+
+const initTheme = () => {
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+};
+
+const toggleTheme = () => {
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  if (isDark) {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
+};
+
+const toggleRail = () => {
+  const rail = document.getElementById("rail");
+  const toggle = document.getElementById("rail-toggle");
+  const isOpen = rail.classList.toggle("open");
   toggle.setAttribute("aria-expanded", isOpen);
+};
+
+const closeRail = () => {
+  document.getElementById("rail").classList.remove("open");
+  document.getElementById("rail-toggle").setAttribute("aria-expanded", "false");
 };
 
 const submitContactForm = () => {
@@ -118,10 +197,12 @@ const submitContactForm = () => {
   const message = document.getElementById("cf-message").value;
   const status = document.getElementById("contact-status");
 
-  // PLACEHOLDER: this form has no backend. Point it at your own
-  // endpoint, or swap this block for a mailto: link.
-  console.log({ name, email, message });
+  // Same fallback as the original template: no backend wired yet, so this
+  // opens the visitor's mail client with the message laid out.
+  const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+  const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+  window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
 
-  status.innerText = "Thanks! Your message has been noted (connect a backend to actually send it).";
+  status.innerText = "Opening your email client…";
   document.getElementById("contact-form").reset();
 };
